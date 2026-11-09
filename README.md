@@ -4,7 +4,6 @@
 
 This project is the inaugural automation initiative of the **Aesthesius** ecosystem. Architected by **Anıl**, it is designed to monitor e-commerce data streams with aesthetic precision and automate strategic purchasing decisions.
 
-![Aesthesius Build](https://img.shields.io/badge/Build-Passing-informational)
 ![Architect](https://img.shields.io/badge/Lead%20Architect-Anıl-blueviolet)
 ![Brand](https://img.shields.io/badge/Powered%20By-Aesthesius-black)
 ![Core](https://img.shields.io/badge/Python-3.12-white)
@@ -22,3 +21,34 @@ Crafted with the perfectionist approach of **Aesthesius Software**, this tool is
 * **Observation (Scraping):** `BeautifulSoup4` & `Requests`
 * **Communication:** Telegram Bot API
 * **Cycle:** Custom Daemon Loop
+
+## 🚀 Setup & Usage
+
+```bash
+pip install -r requirements.txt
+```
+
+Orion is configured with environment variables, so no token is ever written into the code (see `.env.example`):
+
+| Variable | Meaning |
+|---|---|
+| `ORION_URL` | Product page to watch |
+| `ORION_TARGET_PRICE` | Alert when the price is at or below this (TL) |
+| `ORION_INTERVAL_MINUTES` | Minutes between checks (default 60) |
+| `ORION_PRICE_CLASS` | CSS class of the price element (default `product-list__price`) |
+| `TELEGRAM_TOKEN`, `TELEGRAM_CHAT_ID` | Telegram bot token and the chat to notify |
+
+```bash
+export ORION_URL=... ORION_TARGET_PRICE=35000 TELEGRAM_TOKEN=... TELEGRAM_CHAT_ID=...
+python main.py
+```
+
+Prices are expected in the Turkish format (`35.499,90 TL`). Every site names its price element differently, so for a new store set `ORION_PRICE_CLASS`; sites that render prices with JavaScript cannot be read with this approach.
+
+## ✅ Tests
+
+```bash
+python -m unittest discover -v
+```
+
+The tests cover price parsing, settings validation and the alert logic with the network mocked.
