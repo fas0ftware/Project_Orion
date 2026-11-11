@@ -1,0 +1,4 @@
+# URL | target price | CSS selector | name
+https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html | 55 | .price_color | A Light in the Attic
+https://books.toscrape.com/catalogue/tipping-the-velvet_999/index.html | 40 | .price_color | Tipping the Velvet
+https://books.toscrape.com/catalogue/soumission_998/index.html | 50 | .price_color | Soumission

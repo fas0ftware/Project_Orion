@@ -1,54 +1,71 @@
-# 👁️ FA Software - Project Orion
+# 👁️ Project Orion
 
-> **"Perception is the beginning of control."**
+> *"Perception is the beginning of control."*
 
-This project is the inaugural automation initiative of the **FA Software** ecosystem. Architected by **Anıl**, it is designed to monitor e-commerce data streams with aesthetic precision and automate strategic purchasing decisions.
+[![CI](https://github.com/fas0ftware/Project_Orion/actions/workflows/ci.yml/badge.svg)](https://github.com/fas0ftware/Project_Orion/actions/workflows/ci.yml)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Python](https://img.shields.io/badge/python-3.10%2B-yellow)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-![Architect](https://img.shields.io/badge/Lead%20Architect-Anıl-blueviolet)
-![Brand](https://img.shields.io/badge/Powered%20By-FA%20Software-black)
-![Core](https://img.shields.io/badge/Python-3.12-white)
+Orion watches product pages and sends you a **Telegram message when a price drops** to your target. The first automation project of **FA Software**.
 
-## 🌌 Vision & Project
+![Live check, one round and the report](docs/demo.svg)
 
-**Orion** is a universal digital observer designed for the modern web. Architected by **Anıl**, this system abstracts the complexity of data tracking, allowing any user to monitor any product across various e-commerce platforms with precision.
+<sub>Demo against books.toscrape.com, a site built for scraping practice.</sub>
 
-It is not limited to a specific item or store. Whether for high-end electronics, market assets, or daily essentials, **FA Software** adapts to the user's need. Once a target URL and a strategic price point are defined, the sentinel silently patrols the web 24/7. Upon detecting the desired value, it transmits an instant, encrypted intelligence signal to the user via Telegram, ensuring that no opportunity is missed.
-## 🛠️ Architecture
+## Features
 
-Crafted with the perfectionist approach of **FA Software**, this tool is optimized for native performance on Arch Linux.
+- **Many products** in `watchlist.txt`, each with its own target price, optional CSS selector and display name.
+- **Works on most shops without configuration:** finds the price in schema.org **JSON-LD**, then `product:price:amount` / `og:price:amount` meta tags, then `itemprop="price"`, then your CSS selector or class.
+- **Any price format:** `35.499,90 TL`, `₺1.299`, `$1,299.99`, `1 299,00 €`, `CHF 1'299.50`.
+- **No spam:** one message when the price first reaches the target, another only for a **new low**; a price that goes back above the target re-arms the alert. State survives restarts (`orion_state.json`).
+- **Price history** in `price_history.csv` and a `--report` with last / low / high per product.
+- `--once` for cron or systemd timers, `--check URL` to test a page before adding it.
+- Safe by default: 20 s timeouts, 5 MB page limit, HTML-escaped messages, the bot token never appears in logs, CSV cells cannot become spreadsheet formulas, at least 5 minutes between rounds.
 
-* **Engine:** Python 3.x
-* **Observation (Scraping):** `BeautifulSoup4` & `Requests`
-* **Communication:** Telegram Bot API
-* **Cycle:** Custom Daemon Loop
-
-## 🚀 Setup & Usage
+## Setup
 
 ```bash
 pip install -r requirements.txt
+cp watchlist.example.txt watchlist.txt     # URL | target | CSS selector (optional) | name (optional)
+export TELEGRAM_TOKEN=... TELEGRAM_CHAT_ID=...   # from @BotFather and getUpdates; optional
 ```
 
-Orion is configured with environment variables, so no token is ever written into the code (see `.env.example`):
+Without the Telegram variables Orion still checks and logs prices.
 
-| Variable | Meaning |
-|---|---|
-| `ORION_URL` | Product page to watch |
-| `ORION_TARGET_PRICE` | Alert when the price is at or below this (TL) |
-| `ORION_INTERVAL_MINUTES` | Minutes between checks (default 60) |
-| `ORION_PRICE_CLASS` | CSS class of the price element (default `product-list__price`) |
-| `TELEGRAM_TOKEN`, `TELEGRAM_CHAT_ID` | Telegram bot token and the chat to notify |
+## Usage
 
 ```bash
-export ORION_URL=... ORION_TARGET_PRICE=35000 TELEGRAM_TOKEN=... TELEGRAM_CHAT_ID=...
-python main.py
+python main.py --check "https://shop.example/product/123"     # what does Orion see on this page?
+python main.py --once                                         # one round (cron: */60 * * * *)
+python main.py --interval 30                                  # run forever, every 30 minutes
+python main.py --report
 ```
 
-Prices are expected in the Turkish format (`35.499,90 TL`). Every site names its price element differently, so for a new store set `ORION_PRICE_CLASS`; sites that render prices with JavaScript cannot be read with this approach.
+The v1 single-product variables (`ORION_URL`, `ORION_TARGET_PRICE`, `ORION_PRICE_CLASS`) still work when no `watchlist.txt` exists. Pages that only render their price with JavaScript cannot be read this way.
 
-## ✅ Tests
+## Tests
+
+14 tests, network mocked: price formats, all four extraction strategies, broken JSON-LD, watchlist validation, alert de-duplication across price changes, history and state files, formula-injection guard, oversized pages and network errors, token-safe error messages, the CLI.
 
 ```bash
-python -m unittest discover -v
+pip install -r requirements-dev.txt
+python -m pytest -v
 ```
 
-The tests cover price parsing, settings validation and the alert logic with the network mocked.
+![Test results](docs/test-results.svg)
+
+![Security scan](docs/security-scan.svg)
+
+## Notes
+
+Check a shop's terms of use before monitoring it, keep the interval reasonable, and never use automated purchases or high-frequency polling.
+
+## Changelog
+
+- **2.0.0** – Watchlist with many products, JSON-LD/meta/itemprop/CSS price detection, international price formats, alert only on target or new low, persistent state, price history and report, `--once`/`--check`/`--report`, page size limit, HTML-escaped messages, pytest suite, CI with bandit + pip-audit.
+- **1.0.0** – One product, one CSS class, Telegram alert on every check below target.
+
+---
+
+Part of the **FA Software** projects. Licensed under the [MIT License](LICENSE).

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="899" height="334" viewBox="0 0 899 334">
+<rect width="100%" height="100%" rx="10" fill="#0d1117" stroke="#30363d"/>
+<rect width="100%" height="32" rx="10" fill="#161b22"/><rect y="22" width="100%" height="10" fill="#161b22"/>
+<circle cx="18" cy="16" r="6" fill="#ff5f56"/><circle cx="38" cy="16" r="6" fill="#ffbd2e"/><circle cx="58" cy="16" r="6" fill="#27c93f"/>
+<text x="449" y="21" fill="#8b949e" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" text-anchor="middle">orion — live check, one round, report</text>
+<g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">
+<text x="14" y="56" fill="#58a6ff">$ python main.py --check https://books.toscrape.com/.../a-light-in-the-attic_1000/ --selector .price_color</text>
+<text x="14" y="74" fill="#e6edf3">A Light in the Attic | Books to Scrape - Sandbox: 51.77 (via selector)</text>
+<text x="14" y="92" fill="#e6edf3"></text>
+<text x="14" y="110" fill="#58a6ff">$ python main.py --once        # watchlist.txt with 3 products</text>
+<text x="14" y="128" fill="#e6edf3">TELEGRAM_TOKEN / TELEGRAM_CHAT_ID not set: prices are logged, no messages are sent.</text>
+<text x="14" y="146" fill="#e6edf3">Orion 2.0.0: 3 product(s), every 60 min</text>
+<text x="14" y="164" fill="#e6edf3">[22:49:35] A Light in the Attic: 51.77 (target 55.00, via selector)</text>
+<text x="14" y="182" fill="#e6edf3">[22:49:36] Tipping the Velvet: 53.74 (target 40.00, via selector)</text>
+<text x="14" y="200" fill="#e6edf3">[22:49:37] Soumission: 50.10 (target 50.00, via selector)</text>
+<text x="14" y="218" fill="#e6edf3"></text>
+<text x="14" y="236" fill="#58a6ff">$ python main.py --report</text>
+<text x="14" y="254" fill="#e6edf3">PRODUCT                                           LAST         LOW        HIGH  CHECKS</text>
+<text x="14" y="272" fill="#e6edf3">A Light in the Attic                             51.77       51.77       51.77       1</text>
+<text x="14" y="290" fill="#e6edf3">Tipping the Velvet                               53.74       53.74       53.74       1</text>
+<text x="14" y="308" fill="#e6edf3">Soumission                                       50.10       50.10       50.10       1</text>
+</g></svg>

@@ -5,3 +5,9 @@ venv/
 .venv/
 .env.*
 !.env.example
+
+# Orion runtime files (your products and prices)
+watchlist.txt
+orion_state.json
+orion_state.json.tmp
+price_history.csv
