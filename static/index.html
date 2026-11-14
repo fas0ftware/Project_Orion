@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orion</title>
+  <link rel="icon" href="/static/orion.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/base.css">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/ui.js" defer></script>
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <img src="/static/orion.svg" alt="" width="28" height="28">
+      <span class="brand__name">Orion</span>
+      <span class="brand__tag">price watch</span>
+      <span class="pill" id="version"></span>
+      <span class="pill pill--accent" id="demo" hidden>demo data</span>
+    </div>
+    <div class="actions">
+      <span class="note" id="telegram"></span>
+      <button class="btn btn--primary" type="button" id="check-all">Check all now</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="stats" id="stats"></div>
+    <div class="layout">
+      <section class="panel" aria-labelledby="add-title">
+        <h1 class="panel__title" id="add-title">Watch a product</h1>
+        <form id="add-form" novalidate>
+          <label class="field"><span class="field__label">Product page</span>
+            <input type="url" name="url" required placeholder="https://shop.example/product" autocomplete="off"></label>
+          <div class="row">
+            <label class="field"><span class="field__label">Target price</span>
+              <input type="number" name="target" min="0" step="0.01" required placeholder="99.90"></label>
+            <label class="field"><span class="field__label">Name (optional)</span>
+              <input type="text" name="name" maxlength="120" placeholder="Headphones"></label>
+          </div>
+          <label class="field"><span class="field__label">CSS selector (optional)</span>
+            <input type="text" name="selector" maxlength="200" placeholder=".price" autocomplete="off"></label>
+          <p class="note">Leave the selector empty: Orion reads the price from the page's product data. Try it first:</p>
+          <p class="error" id="add-error" role="alert" hidden></p>
+          <div class="preview" id="preview" hidden></div>
+          <div class="actions">
+            <button class="btn" type="button" id="preview-btn">Try page</button>
+            <button class="btn btn--primary" type="submit">Add to watchlist</button>
+          </div>
+        </form>
+        <p class="note foot">Orion alerts on Telegram when a price first reaches its target, and again on every new low. Set <span class="mono">TELEGRAM_TOKEN</span> and <span class="mono">TELEGRAM_CHAT_ID</span> to turn messages on.</p>
+      </section>
+
+      <section aria-label="Watchlist">
+        <div class="products" id="products"></div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
